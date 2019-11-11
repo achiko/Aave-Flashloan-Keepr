@@ -1,0 +1,28 @@
+{
+  "name": "aave-keeper-bot",
+  "description": "",
+  "version": "1.0.0",
+  "main": "truffle-config.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "keeper" : "node keeper-bot/main.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {},
+  "dependencies": {
+    "@openzeppelin/contracts": "^2.4.0",
+    "bignumber.js": "^9.0.0",
+    "chai": "^4.2.0",
+    "chai-as-promised": "^7.1.1",
+    "chai-bignumber": "^3.0.0",
+    "chai-stats": "^0.3.0",
+    "dotenv-flow": "^3.1.0",
+    "lodash": "^4.17.15",
+    "openzeppelin-solidity": "^2.4.0",
+    "table": "^5.4.6"
+  }
+}
