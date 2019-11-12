@@ -33,4 +33,14 @@ Or
 
 
 
+## Forking Block From Mainnet to Ganache 
 
+```
+https://medium.com/@samajammin/how-to-interact-with-ethereums-mainnet-in-a-development-environment-with-ganache-3d8649df0876
+
+ganache-cli --fork https://mainnet.infura.io/v3/{infura_project_id}@{block_number}
+ganache-cli --fork https://mainnet.infura.io/v3/716a47f6015f4235aa0b8b36e8280334@8890316
+```
+## Run Parity Node.
+--light  Have a limitation , cant fetch logs more than 1000 blocks.
+parity --chain=kovan --ws-apis="eth,net,web3,personal,web3,pubsub,parity,parity_pubsub" --jsonrpc-apis=all
