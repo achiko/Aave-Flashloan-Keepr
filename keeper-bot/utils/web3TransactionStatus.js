@@ -21,7 +21,6 @@ const getTransactionStatusByHash = (web3, txHash, options) => {
 	});
 };
 
-
 module.exports = {
 	getTransactionStatusByHash : getTransactionStatusByHash
 };

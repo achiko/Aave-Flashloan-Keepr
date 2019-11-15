@@ -1,8 +1,8 @@
 const Web3 = require("web3");
 require('dotenv-flow').config();
 
-const ETHEREUM_NODE_URL = "https://kovan.infura.io/v3/716a47f6015f4235aa0b8b36e8280334";
-//const ETHEREUM_NODE_URL = "http://127.0.0.1:8545";
+//const ETHEREUM_NODE_URL = "https://kovan.infura.io/v3/716a47f6015f4235aa0b8b36e8280334";
+const ETHEREUM_NODE_URL = "http://127.0.0.1:8545";
 const web3 = new Web3(ETHEREUM_NODE_URL, null, {});
 
 console.log("------  Web3 Instance Properties  ------ ");
@@ -32,10 +32,13 @@ const loggingEnabled = true;
 const logger = (log, _forcePrint) => {
 	const forcePrint = _forcePrint || false;
 	if(loggingEnabled || forcePrint) {
-		//console.log("------ logger ------");
 		console.log(log); 
 	}
 };
+
+// To Do : move to .env
+const GAS_LIMIT = 450000; 
+const GAS_PRICE = 1000000000000;
 
 
 // To Do : Move to .env file ? 
@@ -52,5 +55,7 @@ module.exports =  {
 	web3 : web3,
 	addresses,
 	abi : abi,
-	logger : logger
+	logger : logger,
+	GAS_LIMIT : GAS_LIMIT,
+	GAS_PRICE : GAS_PRICE
 }

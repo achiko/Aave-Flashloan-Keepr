@@ -7,7 +7,7 @@ const SendAndConfirmTransaction = async (_seralisedTransaction) => {
 	
 	logger("1. SEND SIGNED TRANSACTION");
 	const sendResponse = await SendSignedTransaction(_seralisedTransaction);
-	logger(` Transaction hash :   ${sendResponse} `);
+	logger(` Transaction hash :`, sendResponse);
 	
 	if(!sendResponse.hash) {
 		return { success : false,  msg: sendResponse ,receipt : null };
@@ -34,11 +34,12 @@ const SendSignedTransaction = (_seralisedTransaction) => {
 			if(err) {
 				logger("--- ERROR JSON ---");
 				// parse Json from error response : Taken FROM :  https://regex101.com/r/yZ9fO6/1 
-				const regex = /\{(?:[^{}]|(R))*\}/g;
-				let m = regex.exec(err);
-				logger(m[0]);
-				const errorMessage = JSON.parse(m[0]);
-				resolve({hash : null , error : errorMessage });
+				// const regex = /\{(?:[^{}]|(R))*\}/g;
+				// let m = regex.exec(err);
+				// logger(m[0]);
+				// const errorMessage = JSON.parse(m[0]);
+				console.log( err );
+				resolve({hash : null , error : null });
 			}
 			resolve({ hash : hash });
 		});
