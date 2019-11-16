@@ -7,34 +7,42 @@ import "../flashloan/interfaces/IFlashLoanReceiver.sol";
 import "../interfaces/ILendingPoolAddressesProvider.sol";
 import "../interfaces/INetworkMetadataProvider.sol";
 
+import "./ILendingPool.sol";
 
 contract LiquidationWithFlashLoans is FlashLoanReceiverBase {
 
     using SafeMath for uint256;
-    address collateral;
-    address user;
-    uint256 amount;
-    address reserve;
+
+    address public reserve;
+    address public collateral;
+    address public user;
+    uint public amount;
+    
 
     ILendingPoolAddressesProvider addressesProvider;
+    ILendingPool lendingPool;
 
-
-    constructor(ILendingPoolAddressesProvider _provider) public {
+    constructor(ILendingPoolAddressesProvider _provider) FlashLoanReceiverBase(_provider) public {
         addressesProvider = _provider;
     }
-    /*
+    
+    /** 
+        Rewrite This parst as :  ILendingPoolAddressesProvider.getLendingPool() 
+     */
     function setLendingPool (address _lendingPoolAddress) public  {
-         lendingpool =  ILendingPool(_lendingPoolAddress);
+        lendingPool =  ILendingPool(_lendingPoolAddress);
     }
-    */
+    
     /**
         * Set parameters for liquidation // this version is for only for liquidation single Unsafe loan
      */
-    function setLiquidationParams( address _collateral, address  _user, uint256 _amount, address _reserve)  external  {   
+    function setLiquidationParams(address _reserve, address _collateral, address  _user, uint _amount)  external  {   
+        
+        reserve = _reserve;
         collateral = _collateral;
         user = _user;
         amount = _amount;
-        reserve = _reserve;
+        
     }
 
 
@@ -44,17 +52,10 @@ contract LiquidationWithFlashLoans is FlashLoanReceiverBase {
 
         //check the contract has the specified balance
         require(_amount <= getBalanceInternal(address(this), _reserve), "Invalid balance for the contract");
-
-
-        /************************************************/
-
-        /* 1.  Call liquidationCall function in Lendingpool  */
-
-        /**
-            address _collateral, address _reserve, address _user, uint256 _purchaseAmount, bool _receiveAToken
-        */
         
-        /* lendingpool.liquidationCall(collateral, user, amount, true); */
+        /************************************************/
+        /* 1.  Call liquidationCall function in Lendingpool  */
+        lendingpool.liquidationCall(collateral, user, amount, true);
 
 
         transferFundsBackToPoolInternal(_reserve, _amount.add(_fee));
