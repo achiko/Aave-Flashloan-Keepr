@@ -1,7 +1,8 @@
 const Web3 = require("web3");
 require('dotenv-flow').config();
 
-const ETHEREUM_NODE_URL = "https://kovan.infura.io/v3/716a47f6015f4235aa0b8b36e8280334";
+//const ETHEREUM_NODE_URL = "https://kovan.infura.io/v3/716a47f6015f4235aa0b8b36e8280334";
+const ETHEREUM_NODE_URL = "http://127.0.0.1:8545";
 const web3 = new Web3(ETHEREUM_NODE_URL, null, {});
 
 console.log("------  Web3 Instance Properties  ------ ");
@@ -11,13 +12,12 @@ console.log(
 	"web3.eth.transactionConfirmationBlocks:", web3.eth.transactionConfirmationBlocks
 );
 
-const PriceOracle = require("./abi/PriceOracle.json").abi;
+const PriceOracle = require("./abi/PriceOracle.json");
 const AaveOracle = require("./abi/AaveOracle.json");
 const AToken = require("./abi/AToken.json");
 const LendingPool = require("./abi/LendingPool.json");
 const LendingPoolCore = require("./abi/LendingPoolCore.json");
 const LendingPoolAddressesProvider = require("./abi/LendingPoolAddressesProvider.json");
-
 
 const abi = {
 	PriceOracle : PriceOracle,
@@ -27,6 +27,18 @@ const abi = {
 	LendingPoolAddressesProvider : LendingPoolAddressesProvider,
 	LendingPoolCore : LendingPoolCore
 }
+
+const loggingEnabled = true;
+const logger = (log, _forcePrint) => {
+	const forcePrint = _forcePrint || false;
+	if(loggingEnabled || forcePrint) {
+		console.log(log); 
+	}
+};
+
+// To Do : move to .env
+const GAS_LIMIT = 450000; 
+const GAS_PRICE = 1000000000000;
 
 
 // To Do : Move to .env file ? 
@@ -42,5 +54,8 @@ const addresses  = {
 module.exports =  {
 	web3 : web3,
 	addresses,
-	abi : abi
+	abi : abi,
+	logger : logger,
+	GAS_LIMIT : GAS_LIMIT,
+	GAS_PRICE : GAS_PRICE
 }
