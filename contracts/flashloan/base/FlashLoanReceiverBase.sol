@@ -14,6 +14,7 @@ contract FlashLoanReceiverBase is IFlashLoanReceiver {
 
     ILendingPoolAddressesProvider addressesProvider;
 
+
     constructor(ILendingPoolAddressesProvider _provider) public {
         addressesProvider = _provider;
     }

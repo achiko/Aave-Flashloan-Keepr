@@ -48,12 +48,12 @@ const loadLoansAsync = async () => {
 
                 if (healthFactorBN.isLessThanOrEqualTo(1)) {
                     console.log("Unsafe Loan !!! ");
-                    //console.log("Reserve : ", _reserve, "User: ", _user, " Amount : ", _amount, new Date(timestamp * 1000));
+                    console.log("Reserve : ", _reserve, "User: ", _user, " Amount : ", _amount, new Date(timestamp * 1000));
                     _unsafeLoans.push(_loanData);
                 }
             })
 
-        sleep(5000);
+        sleep(10000);
 
         return ( { _unsafeLoans, "count" :  _loans.length } )
 }

@@ -12,7 +12,6 @@ function getUserReserveData(address _reserve, address _user)
 
     function getReserves() external view returns(address[] memory);
     
-
     
     function liquidationCall(address _collateral, address _reserve, address _user, uint256 _purchaseAmount, bool _receiveAToken)
        external
