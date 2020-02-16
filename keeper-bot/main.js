@@ -13,6 +13,8 @@ const sleep = ms => {
 (async() => {
 
     const {_unsafeLoans, count }  = await loadLoansAsync();
+    
+
     console.log(`Total Loans ${count}`)
     console.log(`Usafe Loans : ${_unsafeLoans.length}`);
 

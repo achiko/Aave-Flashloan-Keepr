@@ -1,6 +1,7 @@
 pragma solidity ^0.5.0;
 
 import "openzeppelin-solidity/contracts/math/SafeMath.sol";
+import "openzeppelin-solidity/contracts/token/ERC20/IERC20.sol";
 
 import "../flashloan/base/FlashLoanReceiverBase.sol";
 import "../flashloan/interfaces/IFlashLoanReceiver.sol";
@@ -17,6 +18,8 @@ contract LiquidationWithFlashLoans is FlashLoanReceiverBase {
     address public collateral;
     address public user;
     uint public amount;
+
+    address lendingPoolAddress;
     
 
     ILendingPoolAddressesProvider addressesProvider;
@@ -30,6 +33,7 @@ contract LiquidationWithFlashLoans is FlashLoanReceiverBase {
         Rewrite This parst as :  ILendingPoolAddressesProvider.getLendingPool() 
      */
     function setLendingPool (address _lendingPoolAddress) public  {
+        lendingPoolAddress = _lendingPoolAddress;
         lendingPool =  ILendingPool(_lendingPoolAddress);
     }
     
@@ -54,8 +58,15 @@ contract LiquidationWithFlashLoans is FlashLoanReceiverBase {
         require(_amount <= getBalanceInternal(address(this), _reserve), "Invalid balance for the contract");
         
         /************************************************/
-        /* 1.  Call liquidationCall function in Lendingpool  */
-        lendingpool.liquidationCall(collateral, user, amount, true);
+        
+          /* 1.  Approve Lendingpool   */
+        //IERC20 _token = IERC20(_reserve);
+        //_token.approve(lendingPoolAddress, _amount);
+
+        
+        // address _collateral, address _reserve, address _user, uint256 _purchaseAmount, bool _receiveAToken
+        /* 2.  Call liquidationCall function in Lendingpool  */
+        lendingPool.liquidationCall(collateral, _reserve, user, amount, true);
 
 
         transferFundsBackToPoolInternal(_reserve, _amount.add(_fee));

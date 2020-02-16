@@ -18,15 +18,29 @@ const sleep = ms => {
     const lendingPoolMethods = LendingPool_INSTANCE.methods;
     const addressProviderMethods  = addressProvider_INSTANCE.methods;
     
+/*
+╟──────────────────────────────────────────────────────────────────────────────────────┼────────┼─────────────────────────╢
+║                                                                                      │ aDAI   │ 4874557834901344787009  ║
+║                             Reserve : 0xFf795577d9AC8bD7D90Ee22b6C1703490b6512FD     │        │                         ║
+║                             TokenAddress: 0x8Ac14CE57A87A07A2F13c1797EfEEE8C0F8F571A │        │                         ║
+║                             User : 0x3b24c0325349643857914a81b83170BbEb633E1a        │        │                         ║
+║                                                                                      │        │                         ║
+╟──────────────────────────────────────────────────────────────────────────────────────┼────────┼─────────────────────────╢
+*/
     
-    const _reserve = "0x2d12186Fbb9f9a8C28B3FfdD4c42920f8539D738";
-    const _collateral = "0xEAe6283C6A1EB7E29CA9A4B3F049C894DA7216c1" // aBat 
+    
+const _reserve = "0xFf795577d9AC8bD7D90Ee22b6C1703490b6512FD";
+    const _collateral = "0x8Ac14CE57A87A07A2F13c1797EfEEE8C0F8F571A" // aBat 
     const _amountToLiquidate = new BigNumber(188258266577887314737).div(2).toFixed(0);
+
     console.log(_amountToLiquidate); // 94129133288943665000
 
-    const _flashloanAddress = "0xccabdf4c750d703853f3e0fe5d2021cbb032cd95";
+    const _flashloanAddress = "0x716Adbe10431147d1a7975a15d189cBeE89eA600";
+
     let liquidatorAccount = "0x4CfaAc23D3e08C0B747449efA72756e61E7A5416"
-    const tx = await LendingPool_INSTANCE.methods.flashLoan( _flashloanAddress, _reserve, _amountToLiquidate ).call({ from : liquidatorAccount });
+
+
+    const tx = await LendingPool_INSTANCE.methods.flashLoan( _flashloanAddress, _reserve, _amountToLiquidate ).send({ from : liquidatorAccount });
 
     console.log(tx);
 

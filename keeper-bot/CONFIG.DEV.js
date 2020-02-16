@@ -1,8 +1,8 @@
 const Web3 = require("web3");
 require('dotenv-flow').config();
 
-//const ETHEREUM_NODE_URL = "https://kovan.infura.io/v3/716a47f6015f4235aa0b8b36e8280334";
-const ETHEREUM_NODE_URL = "http://127.0.0.1:8545";
+const ETHEREUM_NODE_URL = "https://kovan.infura.io/v3/716a47f6015f4235aa0b8b36e8280334";
+//const ETHEREUM_NODE_URL = "http://127.0.0.1:8545";
 const web3 = new Web3(ETHEREUM_NODE_URL, null, {});
 
 console.log("------  Web3 Instance Properties  ------ ");

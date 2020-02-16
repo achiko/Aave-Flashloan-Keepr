@@ -40,9 +40,9 @@ https://medium.com/@samajammin/how-to-interact-with-ethereums-mainnet-in-a-devel
 
 ganache-cli --fork https://mainnet.infura.io/v3/{infura_project_id}@{block_number}
 
-ganache-cli --fork https://mainnet.infura.io/v3/716a47f6015f4235aa0b8b36e8280334@14310756  -u 0x4CfaAc23D3e08C0B747449efA72756e61E7A5416
+ganache-cli --fork https://mainnet.infura.io/v3/716a47f6015f4235aa0b8b36e8280334@14310756  --u 0x4CfaAc23D3e08C0B747449efA72756e61E7A5416
 
-ganache-cli --fork https://kovan.infura.io/v3/716a47f6015f4235aa0b8b36e8280334  --unlock 0x4CfaAc23D3e08C0B747449efA72756e61E7A5416
+ganache-cli --fork https://kovan.infura.io/v3/716a47f6015f4235aa0b8b36e8280334  --unlock 0x4CfaAc23D3e08C0B747449efA72756e61E7A5416 --debug --verbose
 
 ```
 ## Run Parity Node.

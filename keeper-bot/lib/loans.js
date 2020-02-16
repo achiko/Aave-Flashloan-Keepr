@@ -3,6 +3,7 @@ const {
     abi,
     addresses
 } = require("../CONFIG.DEV");
+const {table} = require("table");
 const BigNumber = require('bignumber.js');
 const { initContracts  } = require("./contractInstances");
 const _ = require("lodash");
@@ -16,21 +17,23 @@ const loadLoansAsync = async () => {
         console.log("---------------  START ------------------");
         const { LendingPool_INSTANCE } = await initContracts();        
         const {
-            getUserAccountData
+            getUserAccountData,
+            getReserveData
         } = LendingPool_INSTANCE.methods;
 
         // Get All Loans via GetPastEvents 
         const _loans = await LendingPool_INSTANCE.getPastEvents("Borrow", {
             filter: {},
-            fromBlock: 0,
+            fromBlock: 14310600,
             toBlock: 'latest'
         });
 
-        const _unsafeLoans = [];
+        //const _unsafeLoans = [ ["reserve", "TokenAddress", "Symbol", "Amount", "User" ] ];
+        const _unsafeLoans = [ ["General", "Symbol", "Amount"] ];
+
         const _tableData = [];
-
         _.map(_loans, async (_borrowEvent, index) => {
-
+                
                 let {
                     _reserve,
                     _user,
@@ -41,21 +44,31 @@ const loadLoansAsync = async () => {
 
                 let _loanData = await getUserAccountData(_user).call(); // Call getUserAccountData function
 
-                let {
-                    healthFactor
-                } = _loanData; // Get healthfactor 
+                let { healthFactor } = _loanData; // Get healthfactor 
+
                 let healthFactorBN = new BigNumber(healthFactor).dividedBy(10 ** 18);
 
                 if (healthFactorBN.isLessThanOrEqualTo(1)) {
-                    console.log("Unsafe Loan !!! ");
-                    console.log("Reserve : ", _reserve, "User: ", _user, " Amount : ", _amount, new Date(timestamp * 1000));
-                    _unsafeLoans.push(_loanData);
+
+                    let _reserveData =  await getReserveData(_reserve).call();
+                    let aTokenSymbol = await (await new web3.eth.Contract(abi.AToken, _reserveData.aTokenAddress)).methods.symbol().call(); 
+
+                    //_unsafeLoans.push([ _reserve, _reserveData.aTokenAddress, aTokenSymbol, _user, _amount  ]);
+                    let test = ` 
+                            Reserve : ${_reserve}
+                            TokenAddress: ${_reserveData.aTokenAddress}
+                            User : ${_user}
+                    `
+                    //_unsafeLoans.push([ _reserve, _reserveData.aTokenAddress, aTokenSymbol, _amount, _user  ]);
+                    _unsafeLoans.push([ test, aTokenSymbol, _amount  ]);
                 }
             })
+        
+        await sleep(4000); // Bad solution , just for testing ... 
+        
+        console.log( table(_unsafeLoans) );
 
-        sleep(10000);
-
-        return ( { _unsafeLoans, "count" :  _loans.length } )
+        return ( { "_unsafeLoans" : _unsafeLoans, "count" :  _loans.length } )
 }
     
 

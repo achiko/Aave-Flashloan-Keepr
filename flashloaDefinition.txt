@@ -1,0 +1,12 @@
+the FlashLoan functionality allows you to get undercollateralized during 1 single tx getting advantage of the feature of the Ethereum Virtual Machine that if there is a revert at the end of a transaction, every calls to functions before get reverted.
+
+
+In our case we use it in the following way:
+- The LendingPool contract has a method called flashLoan() which, at the beginning borrows a defined _amount from a _reserve -> calls a method on a _receiver smart contract implementing the IFlashLoanReceiver interface sendind the _amount to it -> at the end, requires that _receiver contract to return the amount sent + a fee
+
+- To made use of the flashLoan() function you need 2 things:
+
+  1) Implement a contract implementing the IFlashLoanReceiver interface (inheriting from FlashLoanReceiverBase which has already needed functions), with you custom logic in the executeOperation() method, logic like for example receive X amount from the pool, call the liquidation method with that amount in another platform, return to the LendingPool the amount borrowed + the needed fee and keep for you the difference of this with the actual liquidated collateral received in the other platform.
+
+  
+  2) Another contract or a wallet calling the flashLoan() function with the address of the _receiver contract you implemented before, triggering the process
