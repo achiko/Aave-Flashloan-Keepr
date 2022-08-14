@@ -14,7 +14,7 @@
   "license": "ISC",
   "devDependencies": {},
   "dependencies": {
-    "@openzeppelin/contracts": "^2.4.0",
+    "@openzeppelin/contracts": "^4.7.2",
     "bignumber.js": "^9.0.0",
     "chai": "^4.2.0",
     "chai-as-promised": "^7.1.1",
